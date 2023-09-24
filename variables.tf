@@ -232,6 +232,13 @@ variable "alb_internal" {
   description = "Whether the load balancer is internal or external. Defaults to false."
 }
 
+
+variable "alb_certificate" {
+  type        = bool
+  default     = false
+  description = "Whether the load balancer is ssl enabled or not. Defaults to false."
+}
+
 variable "cookie_insecure" {
   type        = bool
   default     = true

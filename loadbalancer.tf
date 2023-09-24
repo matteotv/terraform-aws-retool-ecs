@@ -51,3 +51,9 @@ resource "aws_lb_target_group" "this" {
     unhealthy_threshold = 2
   }
 }
+
+resource "aws_lb_listener_certificate" "this" {
+  count            = var.alb_certificate == true ? 1 : 0
+  listener_arn    = aws_lb_listener.this.arn
+  certificate_arn = aws_acm_certificate.this.arn
+}

@@ -24,6 +24,7 @@ module "retool" {
     }
     rds_instance_class = "db.t4g.micro"
     rds_publicly_accessible = false
+    alb_certificate = true
     rds_performance_insights_enabled = false
     domain = "yourdomain.com"
     endpoint = "apigateway.dev"
