@@ -33,7 +33,7 @@ resource "aws_route53_record" "endpoint" {
   name    = "${var.endpoint}.${var.domain}"
   type    = var.record.type
   ttl     = var.record.ttl
-  records =  aws_lb.this.dns_name
+  records =  [aws_lb.this.dns_name]
   depends_on = [
     aws_acm_certificate.this , 
     aws_lb.this
