@@ -27,7 +27,7 @@ resource "aws_route53_record" "this" {
   records         = [each.value.record]
 }
 
-resource "aws_acm_certificate_validation" "example" {
+resource "aws_acm_certificate_validation" "this" {
   certificate_arn         = aws_acm_certificate.this.arn
   validation_record_fqdns = [for record in aws_route53_record.this : record.fqdn]
 }
