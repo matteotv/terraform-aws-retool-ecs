@@ -27,6 +27,11 @@ resource "aws_route53_record" "this" {
   records         = [each.value.record]
 }
 
+resource "aws_acm_certificate_validation" "example" {
+  certificate_arn         = aws_acm_certificate.this.arn
+  validation_record_fqdns = [for record in aws_route53_record.this : record.fqdn]
+}
+
 # ROUTE 53 TO CREATE CNAME RECORD IN ROUTE 53 FOR END-POINT 
 resource "aws_route53_record" "endpoint" {
   zone_id = data.aws_route53_zone.this.zone_id
