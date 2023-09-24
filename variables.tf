@@ -428,7 +428,10 @@ variable "endpoint" {
 variable "record" {
   type        = any
   description = "Endpoint record"
-  default     = null
+  default     = {
+        type = "CNAME"
+        ttl = 60
+    }
 }
 
 variable "tags" {
