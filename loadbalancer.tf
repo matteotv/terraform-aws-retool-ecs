@@ -11,6 +11,7 @@ resource "aws_lb_listener" "this" {
   load_balancer_arn = aws_lb.this.arn
   port              = var.alb_certificate == true ? "443" : "80"
   protocol          = var.alb_certificate == true ? "HTTPS" : "HTTP"
+  certificate_arn   = var.alb_certificate == true ? aws_acm_certificate_validation.this.certificate_arn : null
 
   default_action {
     type             = "forward"
@@ -52,8 +53,4 @@ resource "aws_lb_target_group" "this" {
   }
 }
 
-resource "aws_lb_listener_certificate" "this" {
-  count            = var.alb_certificate == true ? 1 : 0
-  listener_arn    = aws_lb_listener.this.arn
-  certificate_arn = aws_acm_certificate_validation.this.certificate_arn
-}
+
