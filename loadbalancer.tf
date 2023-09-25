@@ -9,7 +9,7 @@ resource "aws_lb" "this" {
 
 resource "aws_lb_listener" "this" {
   load_balancer_arn = aws_lb.this.arn
-  port              = var.alb_certificate == true ? 443 : 80
+  port              = var.alb_certificate == true ? "443" : "80"
   protocol          = var.alb_certificate == true ? "HTTPS" : "HTTP"
 
   default_action {
