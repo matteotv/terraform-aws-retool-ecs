@@ -21,3 +21,7 @@ output "fqdn" {
 output "certificate_arn" {
   value = aws_acm_certificate.this.arn
 }
+
+output "EcsCluster" {
+  value = aws_ecs_cluster.this
+}
