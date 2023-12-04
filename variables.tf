@@ -366,7 +366,7 @@ variable "container_egress_rules" {
 }
 
 variable "alb_ingress_rules" {
-  type = map(
+  type = list(
     object({
       description      = string
       from_port        = string
@@ -377,23 +377,23 @@ variable "alb_ingress_rules" {
     })
   )
 
-  default = {
-   HTTPS={
+  default = [
+   {
       description = "Global HTTPS inbound"
       from_port   = "443"
       to_port     = "443"
       protocol    = "tcp"
-      cidr_block  = ["0.0.0.0/0"]
+      cidr_blocks  = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
     },
-    HTTP={
+    {
       description      = "Global HTTP inbound"
       from_port        = "80"
       to_port          = "80"
       protocol         = "tcp"
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
-    }}
+    }]
   description = "Ingress rules for load balancer"
 }
 
