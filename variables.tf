@@ -365,9 +365,8 @@ variable "container_egress_rules" {
   description = "Egress rules for EC2 instances in autoscaling group or ECS services in Fargate"
 }
 
-
 variable "alb_ingress_rules" {
-  type = list(
+  type = map(
     object({
       description      = string
       from_port        = string
@@ -378,27 +377,25 @@ variable "alb_ingress_rules" {
     })
   )
 
-  default = [
-   {
+  default = {
+   HTTPS={
       description = "Global HTTPS inbound"
       from_port   = "443"
       to_port     = "443"
       protocol    = "tcp"
-      cidr_block  = "0.0.0.0/0"
+      cidr_block  = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
     },
-    {
+    HTTP={
       description      = "Global HTTP inbound"
       from_port        = "80"
       to_port          = "80"
       protocol         = "tcp"
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
-    }
-  ]
+    }}
   description = "Ingress rules for load balancer"
 }
-
 
 variable "alb_egress_rules" {
   type = list(
