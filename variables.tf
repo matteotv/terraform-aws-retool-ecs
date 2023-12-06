@@ -446,4 +446,17 @@ variable "tags" {
   default     = {}
 }
 
+variable "additional_polices_fargate" {
+  type        = list(string)
+  description = "List of additional policies to include in the service role policy for fargate based container"
+  default     = []
+}
+
+variable "additional_polices_ec2" {
+  type        = list(string)
+  description = "List of additional policies to include in the service role policy for ec2 based container "
+  default     = []
+}
+
+
 
