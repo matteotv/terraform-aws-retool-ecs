@@ -1,6 +1,6 @@
 resource "aws_iam_role" "execution_role" {
   count              = var.launch_type == "FARGATE" ? 1 : 0
-  name = "${var.APP_NAME}-ecs-iam-role"
+  name = "${var.deployment_name}-ecs-iam-role"
   assume_role_policy = jsonencode({
     "Version" : "2008-10-17",
     "Statement" : [
