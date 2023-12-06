@@ -16,10 +16,9 @@ resource "aws_iam_role" "execution_role" {
   })
   managed_policy_arns = concat(var.additional_polices_fargate, [
     "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
-    "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
+    "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole",
     "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM",
     "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-    
   ])
 
   tags = {
