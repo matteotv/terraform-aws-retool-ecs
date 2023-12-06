@@ -58,7 +58,7 @@ data "aws_iam_policy_document" "service_role_assume_policy" {
 
 data "aws_iam_policy_document" "service_role_policy" {
   statement {
-    actions = concat(var.additional_polices_fargate,[
+    actions = [
       "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
       "elasticloadbalancing:DeregisterTargets",
       "elasticloadbalancing:Describe*",
@@ -66,7 +66,7 @@ data "aws_iam_policy_document" "service_role_policy" {
       "elasticloadbalancing:RegisterTargets",
       "ec2:Describe*",
       "ec2:AuthorizeSecurityGroupIngress"
-    ])
+    ]
     resources = ["*"]
   }
 }
@@ -114,7 +114,7 @@ data "aws_iam_policy_document" "ec2_assume_policy" {
 
 data "aws_iam_policy_document" "ec2_policy" {
   statement {
-    actions = concat(var.additional_polices_ec2,[
+    actions = [
       "ec2:DescribeTags",
       "ecs:CreateCluster",
       "ecs:DeregisterContainerInstance",
@@ -130,7 +130,7 @@ data "aws_iam_policy_document" "ec2_policy" {
       "ecr:BatchGetImage",
       "logs:CreateLogStream",
       "logs:PutLogEvents"
-    ])
+    ]
     resources = ["*"]
   }
 }
