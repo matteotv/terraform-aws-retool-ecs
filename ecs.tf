@@ -31,7 +31,6 @@ data "aws_ami" "this" {
       "hvm"
     ]
   }
-
   owners = [
     "amazon" # only official images
   ]
