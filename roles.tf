@@ -1,3 +1,34 @@
+resource "aws_iam_role" "execution_role" {
+  count              = var.launch_type == "FARGATE" ? 1 : 0
+  name = "${var.APP_NAME}-ecs-iam-role"
+  assume_role_policy = jsonencode({
+    "Version" : "2008-10-17",
+    "Statement" : [
+      {
+        "Sid" : "",
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "ecs-tasks.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
+  managed_policy_arns = concat(var.additional_polices_fargate[
+    "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+    "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
+    "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM",
+    "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
+    
+  ])
+
+  tags = {
+    Name = "${var.deployment_name}-ecs-execution_role"
+  }
+}
+
+
+
 data "aws_iam_policy_document" "task_role_assume_policy" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -50,30 +81,6 @@ resource "aws_iam_role" "service_role" {
     name   = "${var.deployment_name}-service-policy"
     policy = data.aws_iam_policy_document.service_role_policy.json
   }
-}
-
-# Execution Role for Fargate
-data "aws_iam_policy_document" "execution_role_assume_policy" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["ecs-tasks.amazonaws.com"]
-    }
-  }
-}
-
-resource "aws_iam_role" "execution_role" {
-  count              = var.launch_type == "FARGATE" ? 1 : 0
-  name               = "${var.deployment_name}-execution-role"
-  assume_role_policy = data.aws_iam_policy_document.execution_role_assume_policy.json
-}
-
-resource "aws_iam_role_policy_attachment" "execution_role" {
-  count      = var.launch_type == "FARGATE" ? 1 : 0
-  role       = aws_iam_role.execution_role[0].name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
 # IAM Role for EC2 instances
