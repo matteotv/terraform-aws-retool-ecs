@@ -157,7 +157,7 @@ resource "aws_ecs_service" "workflows_worker" {
 
 resource "aws_ecs_task_definition" "retool_jobs_runner" {
   family                   = "retool-jobs-runner"
-  task_role_arn            = aws_iam_role.task_role.arn    
+  task_role_arn            = var.launch_type == "FARGATE" ? aws_iam_role.execution_role[0].arn : aws_iam_role.task_role.arn    
   execution_role_arn       = var.launch_type == "FARGATE" ? aws_iam_role.execution_role[0].arn : null
   requires_compatibilities = var.launch_type == "FARGATE" ? ["FARGATE"] : null
   network_mode             = var.launch_type == "FARGATE" ? "awsvpc" : "bridge"
@@ -207,7 +207,7 @@ resource "aws_ecs_task_definition" "retool_jobs_runner" {
 }
 resource "aws_ecs_task_definition" "retool" {
   family                   = "retool"
-  task_role_arn            = aws_iam_role.task_role.arn
+  task_role_arn            = var.launch_type == "FARGATE" ? aws_iam_role.execution_role[0].arn : aws_iam_role.task_role.arn
   execution_role_arn       = var.launch_type == "FARGATE" ? aws_iam_role.execution_role[0].arn : null
   requires_compatibilities = var.launch_type == "FARGATE" ? ["FARGATE"] : null
   network_mode             = var.launch_type == "FARGATE" ? "awsvpc" : "bridge"
@@ -263,7 +263,7 @@ resource "aws_ecs_task_definition" "retool" {
 resource "aws_ecs_task_definition" "retool_workflows_backend" {
   count                    = var.workflows_enabled ? 1 : 0
   family                   = "retool-workflows-backend"
-  task_role_arn            = aws_iam_role.task_role.arn
+  task_role_arn            = var.launch_type == "FARGATE" ? aws_iam_role.execution_role[0].arn : aws_iam_role.task_role.arn
   execution_role_arn       = var.launch_type == "FARGATE" ? aws_iam_role.execution_role[0].arn : null
   requires_compatibilities = var.launch_type == "FARGATE" ? ["FARGATE"] : null
   network_mode             = var.launch_type == "FARGATE" ? "awsvpc" : "bridge"
@@ -318,7 +318,7 @@ resource "aws_ecs_task_definition" "retool_workflows_backend" {
 resource "aws_ecs_task_definition" "retool_workflows_worker" {
   count                    = var.workflows_enabled ? 1 : 0
   family                   = "retool-workflows-worker"
-  task_role_arn            = aws_iam_role.task_role.arn
+  task_role_arn            = var.launch_type == "FARGATE" ? aws_iam_role.execution_role[0].arn : aws_iam_role.task_role.arn
   execution_role_arn       = var.launch_type == "FARGATE" ? aws_iam_role.execution_role[0].arn : null
   requires_compatibilities = var.launch_type == "FARGATE" ? ["FARGATE"] : null
   network_mode             = var.launch_type == "FARGATE" ? "awsvpc" : "bridge"
