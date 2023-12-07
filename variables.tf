@@ -8,7 +8,7 @@ variable "node_env" {
   type        = string
   default     = "production"
   description = "Value for NODE_ENV variable. Defaults to `production` and should not be set to any other value, regardless of environment."
-}
+  }
 
 variable "vpc_id" {
   type        = string
@@ -64,28 +64,33 @@ variable "ecs_retool_image" {
 
 variable "ecs_task_resource_map" {
   type = map(object({
-    cpu    = number
-    memory = number
+    cpu           = number
+    memory        = number
+    desired_count = number
   }))
   default = {
     main = {
       cpu    = 2048
       memory = 4096
+      desired_count = 1
     },
     jobs_runner = {
       cpu    = 1024
       memory = 2048
+      desired_count = 1
     },
     workflows_backend = {
       cpu    = 2048
       memory = 4096
+      desired_count = 1
     }
     workflows_worker = {
       cpu    = 2048
       memory = 4096
+      desired_count = 1
     }
   }
-  description = "Amount of CPU and Memory provisioned for each task."
+  description = "Amount of CPU, Memory and Desired_Count provisioned for each task."
 }
 
 variable "force_deployment" {
